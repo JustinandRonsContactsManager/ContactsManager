@@ -1,12 +1,13 @@
 
-
-
 public class ContactsManager {
 
     public static void main(String[] args) {
 
+        start();
+
     }// main
 
+    static Input input = new Input();
 
     public static void menu(){
         System.out.println("Welcome to Contacts Manager\n");
@@ -17,6 +18,13 @@ public class ContactsManager {
     }
 
 
+    public static void start(){
+        menu();
+
+        input.getInt(1, 4, "Enter an option:");
+
+
+    }
 
 
 }// class
