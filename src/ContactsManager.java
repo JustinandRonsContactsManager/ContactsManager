@@ -1,23 +1,23 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
+import java.io.File;
 
 public class ContactsManager {
-    String directory = "src/data";
-    String file = "contacts.txt";
-    Path contactsPath = Paths.get(directory);
-
-    public static void main(String[] args) {
-        start();
-    }// main
 
     static Input input = new Input();
     static String directory = "src/data";
     static String filename = "contactsList.txt";
     static Path dataDirectory = Paths.get(directory);
     static Path dataFile = Paths.get(directory, filename);
+
+        public static void main(String[] args) throws FileNotFoundException {
+        start();
+    }// main
 
     public static void start(){
         System.out.println("Welcome to Contacts Manager!");
@@ -50,7 +50,12 @@ public class ContactsManager {
                 }
                 break;
             case 3:
-                // code block
+                try{
+                    ContactsManager contactsSearch = new ContactsManager();
+                    contactsSearch.searchContacts();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case 4:
                 // code block
@@ -93,5 +98,21 @@ public class ContactsManager {
 
         menu();
     }// addNewContact
+
+    public void searchContacts() throws FileNotFoundException{
+        Scanner scan = new Scanner(new File(directory, filename));
+        String searchName = input.getString("Enter a contact name");
+        while(scan.hasNext()){
+            String contactInfo = scan.nextLine().toLowerCase().toString();
+            if(contactInfo.contains(searchName.toLowerCase())){
+                System.out.print(contactInfo + "\n");
+            }
+        }
+        menu();
+    }//searchContact
+
+    public static void deleteContact(){
+
+    }//deleteContact
 
 }// class
