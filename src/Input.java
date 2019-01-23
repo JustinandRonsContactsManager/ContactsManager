@@ -56,6 +56,19 @@ public class Input {
         return getInt(min, max);
     }
 
+    public long getLong(){
+        while (!scanner.hasNextLong()) {
+            System.out.println("Enter an long number: ");
+            scanner.next();
+        }
+        return scanner.nextLong();
+    }
+
+    public long getLong(String prompt){
+        System.out.println(prompt);
+        return getLong();
+    }
+
     public String getString(){
         return scanner.next();
     }
@@ -120,8 +133,5 @@ public class Input {
         String hexidecimal = scanner.next();
         return Long.parseLong(hexidecimal, 16);
     }
-
-
-
 
 }//class

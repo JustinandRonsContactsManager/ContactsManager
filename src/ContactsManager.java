@@ -1,5 +1,8 @@
-import java.util.List;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 public class ContactsManager {
     String directory = "src/data";
@@ -11,85 +14,84 @@ public class ContactsManager {
     }// main
 
     static Input input = new Input();
+    static String directory = "src/data";
+    static String filename = "contactsList.txt";
+    static Path dataDirectory = Paths.get(directory);
+    static Path dataFile = Paths.get(directory, filename);
+
+    public static void start(){
+        System.out.println("Welcome to Contacts Manager!");
+        menu();
+    }
 
     public static void menu(){
-        System.out.println("Welcome to Contacts Manager\n");
+        System.out.println("\nPlease enter an option");
         System.out.println("1: View all contacts");
         System.out.println("2: Add a new contact");
         System.out.println("3: Search a contact by his/her name");
         System.out.println("4: Delete an existing contact");
+        System.out.println("5: Exit");
 
-        int userInput = input.getInt(1, 4, "Enter an option (1, 2, 3 or 4):");
+        int optionSelected = input.getInt(1, 5);
 
-        if(userInput == 1){
-          //view all contacts
-          viewContacts();
-        } else if( userInput == 2) {
-          //add a new contact
-          addContact();
-        } else if( userInput == 3) {
-          //search a contact by name
-          searchContact();
-        } else if( userInput == 4) {
-          //delete an extisting contact
-          deleteContact();
+        switch(optionSelected){
+            case 1:
+                try {
+                    showContacts();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 2:
+                try {
+                    addNewContact();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 3:
+                // code block
+                break;
+            case 4:
+                // code block
+                break;
+            case 5:
+                System.out.println("Exiting...");
+                System.exit(0);
+                break;
         }
-    }//menu
+    }// menu
 
-    private String contact;
-    private Int number;
+    public static void showContacts() throws IOException {
+        List<String> contactList = Files.readAllLines(dataFile);
 
-    public Contact(String Contact) {
-      this.contact = contact;
-      this.number = number;
-    }//Contact
+        System.out.println("Here's the contact list:");
 
-    public String getContact() {
-      return contact;
-    }//getContact
+        for(String item : contactList) {
+            System.out.println(item);
+        }
 
-    public Int getNumber() {
-      return number;
-    }//getNumber
-    //setters
-    public void setNumber(Int number) {
-      this.number = number;
-    }//setNumber
-
-    public void setContact(String contact) {
-      this.contact = contact;
-    }//setContact
-
-    public static void start(){
         menu();
-    }//start
+    }// showContacts
 
-    public static void viewContacts(){
-      //write file path
+    public static void addNewContact() throws IOException {
+        if (Files.notExists(dataDirectory)) {
+            Files.createDirectories(dataDirectory);
+        }
+        if(Files.notExists(dataFile)) {
+            Files.createFile(dataFile);
+        }
 
-      List<String> Files.readAllLines(Path contactsPath);
-      //catch and create file if not found
-      if(Files.notExists(Path contactsPath)){
-        Path Files.creatFile(Path contactsPath);
-      }
+        List<String> lines = Files.readAllLines(dataFile);
 
-    }//viewContacts
-    public static void addContact(){
-      //initialize contactsList
-      List<String> contactsList;
-      Path contactsPath = Paths.get("data", "contacts.txt");
-      String newContactName = input.getString("Enter a new Contact Name");
-      Int newPhoneNumber = input.getInt("Enter a new Phone number for " + newContactName);
-      Files.write(contactsPath, Arrays.listOf(contactsList));
+        String contactName = input.getString("Please input the new contact name:");
+        long contactNumber = input.getLong("Please input the new contact number:");
 
-    }//addContact
-    public static void searchContact(){
+        lines.add(contactName + " | " + contactNumber);
 
-    }//searchContact
-    public static void deleteContact(){
+        Files.write(dataFile, lines);
 
-    }//deleteContact
-
-
+        menu();
+    }// addNewContact
 
 }// class
