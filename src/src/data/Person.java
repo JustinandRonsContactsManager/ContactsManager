@@ -3,9 +3,9 @@ package src.data;
 public class Person {
 
     private String name;
-    private long number;
+    private String number;
 
-    public Person(String name){
+    public Person(String name, String number){
         this.name = name;
         this.number = number;
     }
@@ -14,11 +14,11 @@ public class Person {
         return name;
     }
 
-    public long getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(long number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

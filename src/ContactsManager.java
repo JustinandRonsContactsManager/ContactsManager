@@ -1,3 +1,5 @@
+import src.data.Person;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +11,11 @@ import java.util.Scanner;
 import java.io.File;
 import java.util.Iterator;
 
-public class ContactsManager {
+public class ContactsManager extends Person {
+
+    public static void main(String[] args){
+        start();
+    }// main
 
     static Input input = new Input();
     static String directory = "src/data";
@@ -17,9 +23,10 @@ public class ContactsManager {
     static Path dataDirectory = Paths.get(directory);
     static Path dataFile = Paths.get(directory, filename);
 
-        public static void main(String[] args) throws FileNotFoundException {
-        start();
-    }// main
+    // constructor
+    public ContactsManager(String name, String number) {
+        super(name, number);
+    }
 
     public static void start(){
         System.out.println("Welcome to Contacts Manager!");
@@ -53,8 +60,7 @@ public class ContactsManager {
                 break;
             case 3:
                 try{
-                    ContactsManager contactsSearch = new ContactsManager();
-                    contactsSearch.searchContacts();
+                    searchContacts();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -94,6 +100,7 @@ public class ContactsManager {
         }
 
         List<String> lines = Files.readAllLines(dataFile);
+        List<Person> people = new ArrayList<>();
 
         String contactName = input.getString("Please input the new contact name:");
          long contactNumber = input.getLong("Please input the new contact number:");
@@ -108,12 +115,16 @@ public class ContactsManager {
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d+)", "$1-$2");
-                    lines.add(contactName + " | " + number);
+                    Person person = new Person(contactName, number);
+                    people.add(person);
+                    lines.add(person.getName() + " | " + person.getNumber());
                 }else if(is10Digits){
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-                    lines.add(contactName + " | " + number);
+                    Person person = new Person(contactName, number);
+                    people.add(person);
+                    lines.add(person.getName() + " | " + person.getNumber());
                 }
             }while(loop);
 
@@ -121,7 +132,7 @@ public class ContactsManager {
         menu();
     }// addNewContact
 
-    public void searchContacts() throws FileNotFoundException{
+    public static void searchContacts() throws FileNotFoundException{
         Scanner scan = new Scanner(new File(directory, filename));
         String searchName = input.getString("Enter a contact name");
         while(scan.hasNext()){
@@ -140,7 +151,7 @@ public class ContactsManager {
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
-            if (x.equalsIgnoreCase(delete))
+            if (x.contains(delete))
                 itr.remove();
 
         }
