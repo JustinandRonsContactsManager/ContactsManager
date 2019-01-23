@@ -98,7 +98,9 @@ public class ContactsManager {
         String contactName = input.getString("Please input the new contact name:");
         long contactNumber = input.getLong("Please input the new contact number:");
 
-        lines.add(contactName + " | " + contactNumber);
+        String numberAsString = Long.toString(contactNumber);
+        String number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+        lines.add(contactName + " | " + number);
 
         Files.write(dataFile, lines);
 
@@ -132,5 +134,6 @@ public class ContactsManager {
         Files.write(dataFile, lines);
         menu();
     }//deleteContact
+    
 
 }// class
