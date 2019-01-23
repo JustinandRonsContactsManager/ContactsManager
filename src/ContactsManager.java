@@ -3,9 +3,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.io.File;
+import java.util.Iterator;
 
 public class ContactsManager {
 
@@ -58,7 +60,11 @@ public class ContactsManager {
                 }
                 break;
             case 4:
-                // code block
+                try {
+                    deleteContact();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;
             case 5:
                 System.out.println("Exiting...");
@@ -111,8 +117,20 @@ public class ContactsManager {
         menu();
     }//searchContact
 
-    public static void deleteContact(){
+    public static void deleteContact() throws IOException {
+        List<String> lines = Files.readAllLines(dataFile);
+        Iterator itr = lines.iterator();
+        String delete = input.getString("What do you want to delete? (CASE SENSITIVE)");
 
+        while (itr.hasNext()) {
+            String x = (String) itr.next();
+            if (x.contains(delete))
+                itr.remove();
+
+        }
+
+        Files.write(dataFile, lines);
+        menu();
     }//deleteContact
 
 }// class
