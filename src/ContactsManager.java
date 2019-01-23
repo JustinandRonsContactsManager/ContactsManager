@@ -140,7 +140,7 @@ public class ContactsManager {
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
-            if (x.contains(delete))
+            if (x.equalsIgnoreCase(delete))
                 itr.remove();
 
         }
