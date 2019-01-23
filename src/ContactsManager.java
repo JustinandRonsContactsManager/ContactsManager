@@ -96,49 +96,28 @@ public class ContactsManager {
         List<String> lines = Files.readAllLines(dataFile);
 
         String contactName = input.getString("Please input the new contact name:");
-//        long contactNumber = input.getLong("Please input the new contact number:");
+         long contactNumber = input.getLong("Please input the new contact number:");
+        String number;
+        boolean loop = true;
+            do{
+                contactNumber = input.getLong("Please input the new contact number:");
+                String numberAsString;
+                boolean is7Digits = Long.toString(contactNumber).length() == 7;
+                boolean is10Digits = Long.toString(contactNumber).length() == 10;
+                if(is7Digits){
+                    loop = false;
+                    numberAsString = Long.toString(contactNumber);
+                    number = numberAsString.replaceFirst("(\\d{3})(\\d+)", "$1-$2");
+                    lines.add(contactName + " | " + number);
+                }else if(is10Digits){
+                    loop = false;
+                    numberAsString = Long.toString(contactNumber);
+                    number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
+                    lines.add(contactName + " | " + number);
+                }
+            }while(loop);
 
-
-
-
-
-        long contactNumber = 0;
-        boolean is7Digits = false;
-        boolean is10Digits = false;
-
-        is7Digits = Long.toString(contactNumber).length() == 7;
-        is10Digits = Long.toString(contactNumber).length() == 10;
-
-//        if(is7Digits){
-////            contactNumber = input.getLong("Please input the new contact number:");
-//        }else if(is10Digits){
-////            contactNumber = input.getLong("Please input the new contact number:");
-//        }else{
-//        }
-
-
-        while(!is7Digits || !is10Digits){
-            contactNumber = input.getLong("Please input the new contact number:");
-            if(is7Digits){
-                is7Digits = true;
-                is10Digits = true;
-            }
-        }
-
-
-            String numberAsString = Long.toString(contactNumber);
-            String number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-
-
-
-
-
-
-
-        lines.add(contactName + " | " + number);
-
-        Files.write(dataFile, lines);
-
+            Files.write(dataFile, lines);
         menu();
     }// addNewContact
 
