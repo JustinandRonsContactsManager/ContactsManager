@@ -13,6 +13,8 @@ public class ContactsManager extends Person {
 
     public static void main(String[] args){
         start();
+
+//        System.out.println(people);
     }// main
 
     static Input input = new Input();
@@ -20,6 +22,7 @@ public class ContactsManager extends Person {
     static String filename = "contactsList.txt";
     static Path dataDirectory = Paths.get(directory);
     static Path dataFile = Paths.get(directory, filename);
+    static List<Person> people = new ArrayList<>();
 
     // constructor
     public ContactsManager(String name, String number) {
@@ -98,7 +101,8 @@ public class ContactsManager extends Person {
         }
 
         List<String> lines = Files.readAllLines(dataFile);
-        List<Person> people = new ArrayList<>();
+        Person person;
+        String number = "";
 
         String contactName = input.getString("Please input the new contact name:");
 
@@ -106,23 +110,20 @@ public class ContactsManager extends Person {
             do{
                 long contactNumber = input.getLong("Please input the new contact number:");
                 String numberAsString;
-                String number;
                 if(Long.toString(contactNumber).length() == 7){
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d+)", "$1-$2");
-                    Person person = new Person(contactName, number);
-                    people.add(person);
-                    lines.add(person.getName() + " | " + person.getNumber());
                 }else if(Long.toString(contactNumber).length() == 10){
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
-                    Person person = new Person(contactName, number);
-                    people.add(person);
-                    lines.add(person.getName() + " | " + person.getNumber());
                 }
             }while(loop);
+
+            person = new Person(contactName, number);
+            people.add(person);
+            lines.add(person.getName() + " | " + person.getNumber());
 
             Files.write(dataFile, lines);
         menu();
@@ -144,11 +145,26 @@ public class ContactsManager extends Person {
         List<String> lines = Files.readAllLines(dataFile);
         Iterator itr = lines.iterator();
         String delete = input.getString("What do you want to delete? (CASE SENSITIVE)");
+        boolean match = false;
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
-            if (x.contains(delete))
+
+            for (int i = 0; i < delete.length(); i++) {
+                if (x.charAt(i) == delete.charAt(i)) {
+                    match = true;
+                }else{
+                    match = false;
+                }
+            }
+
+            if (match) {
                 itr.remove();
+            }
+        }
+
+        if(!match){
+            deleteContact();
         }
 
         Files.write(dataFile, lines);
