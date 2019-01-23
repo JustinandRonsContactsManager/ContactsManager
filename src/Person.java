@@ -1,5 +1,3 @@
-package src.data;
-
 public class Person {
 
     private String name;

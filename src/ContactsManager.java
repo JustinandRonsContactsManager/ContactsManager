@@ -1,5 +1,3 @@
-import src.data.Person;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -103,22 +101,20 @@ public class ContactsManager extends Person {
         List<Person> people = new ArrayList<>();
 
         String contactName = input.getString("Please input the new contact name:");
-         long contactNumber = input.getLong("Please input the new contact number:");
-        String number;
+
         boolean loop = true;
             do{
-                contactNumber = input.getLong("Please input the new contact number:");
+                long contactNumber = input.getLong("Please input the new contact number:");
                 String numberAsString;
-                boolean is7Digits = Long.toString(contactNumber).length() == 7;
-                boolean is10Digits = Long.toString(contactNumber).length() == 10;
-                if(is7Digits){
+                String number;
+                if(Long.toString(contactNumber).length() == 7){
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d+)", "$1-$2");
                     Person person = new Person(contactName, number);
                     people.add(person);
                     lines.add(person.getName() + " | " + person.getNumber());
-                }else if(is10Digits){
+                }else if(Long.toString(contactNumber).length() == 10){
                     loop = false;
                     numberAsString = Long.toString(contactNumber);
                     number = numberAsString.replaceFirst("(\\d{3})(\\d{3})(\\d+)", "($1) $2-$3");
@@ -153,12 +149,10 @@ public class ContactsManager extends Person {
             String x = (String) itr.next();
             if (x.contains(delete))
                 itr.remove();
-
         }
 
         Files.write(dataFile, lines);
         menu();
     }//deleteContact
-    
 
 }// class
