@@ -114,8 +114,6 @@ public class ContactsManager extends Person {
             }
         }
 
-
-
         boolean loop = true;
             do{
                 long contactNumber = input.getLong("Please input the new contact number:");
@@ -159,15 +157,20 @@ public class ContactsManager extends Person {
         Iterator itr = lines.iterator();
         String userInput = input.getString("What do you want to delete? (CASE SENSITIVE)");
         String userInput2 = userInput.replaceAll("\\P{Print}","");
+        boolean match = false;
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
             String subStringArray[] = x.split(Pattern.quote("|"));
             String subStringTrimmed = subStringArray[0].trim();
-            System.out.println(subStringTrimmed);
             if (subStringTrimmed.equals(userInput2)){
                 itr.remove();
+                match = true;
             }
+        }
+
+        if(!match){
+            System.out.println("Contact not found");
         }
 
         Files.write(dataFile, lines);
