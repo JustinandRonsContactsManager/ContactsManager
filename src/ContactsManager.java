@@ -102,12 +102,19 @@ public class ContactsManager extends Person {
         List<Person> people = new ArrayList<>();
 
         String contactName = input.getString("Please input the new contact name:");
-        
-        for(Person person: people){
-            if(contactName == person.getName()){
+        //check if contact is already made
+        Iterator itr = lines.iterator();
+        while (itr.hasNext()) {
+            String x = (String) itr.next();
+            String subStringArray[] = x.split(Pattern.quote("|"));
+            String subStringTrimmed = subStringArray[0].trim();
+            if(subStringTrimmed.equals(contactName)){
+                System.out.print("Contact already made\n");
                 addNewContact();
-            }    
+            }
         }
+
+
 
         boolean loop = true;
             do{
