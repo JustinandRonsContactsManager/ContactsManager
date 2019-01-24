@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 public class ContactsManager extends Person {
 
@@ -107,6 +108,7 @@ public class ContactsManager extends Person {
                 addNewContact();
             }    
         }
+
         boolean loop = true;
             do{
                 long contactNumber = input.getLong("Please input the new contact number:");
@@ -152,10 +154,12 @@ public class ContactsManager extends Person {
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
-            String subStringArray[] = x.split(" ");
-            
-            if (subStringArray[0].equals(delete))
+            String subStringArray[] = x.split(Pattern.quote("|"));
+            String subStringTrimmed = subStringArray[0].trim();
+            System.out.println(subStringTrimmed);
+            if (subStringTrimmed.contains(delete)){
                 itr.remove();
+            }
         }
 
         Files.write(dataFile, lines);
