@@ -150,14 +150,15 @@ public class ContactsManager extends Person {
     public static void deleteContact() throws IOException {
         List<String> lines = Files.readAllLines(dataFile);
         Iterator itr = lines.iterator();
-        String delete = input.getString("What do you want to delete? (CASE SENSITIVE)");
+        String userInput = input.getString("What do you want to delete? (CASE SENSITIVE)");
+        String userInput2 = userInput.replaceAll("\\P{Print}","");
 
         while (itr.hasNext()) {
             String x = (String) itr.next();
             String subStringArray[] = x.split(Pattern.quote("|"));
             String subStringTrimmed = subStringArray[0].trim();
             System.out.println(subStringTrimmed);
-            if (subStringTrimmed.contains(delete)){
+            if (subStringTrimmed.equals(userInput2)){
                 itr.remove();
             }
         }
