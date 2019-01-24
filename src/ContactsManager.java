@@ -80,11 +80,22 @@ public class ContactsManager extends Person {
 
     public static void showContacts() throws IOException {
         List<String> contactList = Files.readAllLines(dataFile);
+        ArrayList<String[]> table = new ArrayList<String[]>();
 
         System.out.println("Here's the contact list:");
 
-        for(String item : contactList) {
-            System.out.println(item);
+        Iterator itr = contactList.iterator();
+        while (itr.hasNext()) {
+            String x = (String) itr.next();
+            String subStringArray[] = x.split(Pattern.quote("|"));
+
+            table.add(subStringArray);
+        }
+
+        System.out.println("Name          | Phone Number");
+        System.out.printf("------------------------------%n");
+        for (String[] row : table) {
+            System.out.format("%-14s|%-15s\n", row);
         }
 
         menu();
